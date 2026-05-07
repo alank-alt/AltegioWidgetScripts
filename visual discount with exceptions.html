@@ -1,0 +1,18 @@
+<script>
+  setInterval(() => {
+  const priceElements = document.querySelectorAll('[data-locator="service_price"]:not([data-discount-applied="true"])');
+  priceElements.forEach(element => {
+    const isExcluded = element.closest('[data-locator="service_item_13396567"], [data-locator="service_item_13396579"]');
+    if (!isExcluded) {
+      const originalText = element.textContent;
+      const numericValue = parseInt(originalText.replace(/[^\d]/g, ''), 10);
+      if (!isNaN(numericValue)) {
+        const discountedPrice = Math.round(numericValue * 0.8);
+        const formattedPrice = discountedPrice.toLocaleString('en-US');
+        element.innerHTML = ` ${formattedPrice}&nbsp;₸ `;
+      }
+    }
+    element.setAttribute('data-discount-applied', 'true');
+  });
+}, 200);
+</script>

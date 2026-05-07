@@ -1,0 +1,10 @@
+<script>
+setInterval(() => {
+  const labels = document.querySelectorAll(".form-input__title");
+  labels.forEach((label) => {
+    if (label.innerText.includes("Phone")) {
+      label.innerText = "WhatsApp Number *";
+    }
+  });
+}, 500);
+</script>

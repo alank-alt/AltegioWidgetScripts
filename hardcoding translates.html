@@ -1,0 +1,54 @@
+<script>
+(function() {
+    const CONFIG = {
+        stateAttributes: {
+            processedLang: 'data-hardcoded-lang'
+        },
+        checkIntervalMs: 500,
+        translations: {
+            '[data-locator="vai-jusu-majdzivniekam-ir-veiktas-visas-nepieciesamas-poteshas-your-pet-received-all-the-necessary-vaccinationsvse-l"] .select-title': {
+                "lv-LV": "Vai jūsu mājdzīvniekam ir veiktas visas nepieciešamās potes?",
+                "en-US": "Has your pet received all the necessary vaccinations?",
+                "ru-RU": "Все ли необходимые прививки сделаны у вашего питомца?",
+                "default": "Vai jūsu mājdzīvniekam ir veiktas visas nepieciešamās potes?"
+            },
+            '[data-locator="vai-jusu-majdzivniekam-ir-zinamas-alergijasdoes-your-pet-have-any-known-allergiesest-li-u-vashego-pitomtsa-izvestnie"] .select-title': {
+                "lv-LV": "Vai jūsu mājdzīvniekam ir zināmas alerģijas?",
+                "en-US": "Does your pet have any known allergies?",
+                "ru-RU": "Есть ли у вашего питомца известные аллергии?",
+                "default": "Vai jūsu mājdzīvniekam ir zināmas alerģijas?"
+            },
+            '[data-locator="vai-majdzivniekam-ir-hroniskas-slimibas-vai-veselibas-problemasdoes-your-pet-have-any-chronic-illnesses-or-health-prob"] .select-title': {
+                "lv-LV": "Vai mājdzīvniekam ir hroniskas slimības vai veselības problēmas?",
+                "en-US": "Does your pet have any chronic illnesses or health problems?",
+                "ru-RU": "Есть ли у питомца хронические заболевания или проблемы со здоровьем?",
+                "default": "Vai mājdzīvniekam ir hroniskas slimības vai veselības problēmas?"
+            },
+            '[data-locator="vai-majdzivnieks-kopsanas-laika-medz-uzvesties-agresividoes-your-pet-tend-to-behave-aggressively-during-groomingproya"] .select-title': {
+                "lv-LV": "Vai mājdzīvnieks kopšanas laikā mēdz uzvesties agresīvi?",
+                "en-US": "Does your pet tend to behave aggressively during grooming?",
+                "ru-RU": "Проявляет ли питомец агрессию во время груминга?",
+                "default": "Vai mājdzīvnieks kopšanas laikā mēdz uzvesties agresīvi?"
+            }
+        }
+    };
+    function applyHardcodedTranslations() {
+        const currentLang = document.documentElement.lang || "default";
+        for (const selector in CONFIG.translations) {
+            if (CONFIG.translations.hasOwnProperty(selector)) {
+                const langOptions = CONFIG.translations[selector];
+                const targetText = langOptions[currentLang] !== undefined 
+                    ? langOptions[currentLang] 
+                    : langOptions["default"];
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    if (el.getAttribute(CONFIG.stateAttributes.processedLang) !== currentLang) {
+                        el.textContent = targetText;
+                        el.setAttribute(CONFIG.stateAttributes.processedLang, currentLang);
+                    }
+                });
+            }
+        }
+    }
+    setInterval(applyHardcodedTranslations, CONFIG.checkIntervalMs);
+})();</script>
