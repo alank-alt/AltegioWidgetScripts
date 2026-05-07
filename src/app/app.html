@@ -1,0 +1,43 @@
+<div class="app-container">
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">⚡</span>
+      <h1>Scripts<span class="highlight">Collection</span></h1>
+    </div>
+    <p class="subtitle">Your ultimate repository of automation scripts</p>
+  </header>
+
+  <main class="main-content">
+    <div class="script-list">
+      <div *ngFor="let script of scripts; let i = index" class="script-card" [style.animation-delay]="(i * 0.1) + 's'">
+        <div class="script-info">
+          <h2>{{ script.name }}</h2>
+          <div class="meta">
+            <span class="size">{{ formatBytes(script.size) }}</span>
+            <span class="date">{{ script.lastModified | date:'mediumDate' }}</span>
+          </div>
+        </div>
+        
+        <div class="script-actions">
+          <button class="btn btn-outline" (click)="viewScript(script.name)">
+            {{ selectedScript === script.name ? 'Hide Code' : 'View Code' }}
+          </button>
+          <button class="btn btn-outline" (click)="copyScript(script.name)">Copy to Clipboard</button>
+          <button class="btn btn-primary" (click)="downloadScript(script.name)">Download</button>
+        </div>
+
+        <div class="script-viewer" *ngIf="selectedScript === script.name">
+          <div class="viewer-header">
+            <h3>{{ script.name }}</h3>
+            <button class="close-btn" (click)="selectedScript = null">&times;</button>
+          </div>
+          <pre><code>{{ scriptContent }}</code></pre>
+        </div>
+      </div>
+      
+      <div *ngIf="scripts.length === 0" class="empty-state">
+        <p>No scripts found in the collection.</p>
+      </div>
+    </div>
+  </main>
+</div>
