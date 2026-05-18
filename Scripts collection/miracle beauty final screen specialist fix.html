@@ -1,0 +1,160 @@
+<script>
+    (() => {
+        const titleTranslations = {
+            ru: "Ваша запись находится на рассмотрении, пожалуйста, ожидайте обратной связи от администратора.",
+            en: "Your booking is under review, please wait for feedback from the administrator.",
+            ka: "თქვენი ჯავშანი განხილვის პროცესშია, გთხოვთ დაელოდოთ უკუკავშირს ადმინისტრატორისგან.",
+            az: "Sifarişiniz nəzərdən keçirilir, xahiş edirik administratorun rəyini gözləyin."
+        };
+        const fallbackLang = "en";
+        const applyCustomTranslations = () => {
+            const currentLang = (document.documentElement.lang || navigator.language).toLowerCase();
+            const titleElement = document.querySelector('[data-locator="created_booking_page_title"]');
+            if (titleElement) {
+                titleElement.style.color = "var(--y-core-color-calm-text-green)";
+                const langKey = Object.keys(titleTranslations).find(key => currentLang.includes(key)) || fallbackLang;
+                if (titleElement.textContent !== titleTranslations[langKey]) {
+                    titleElement.textContent = titleTranslations[langKey];
+                }
+            }
+        };
+        applyCustomTranslations();
+        const observer = new MutationObserver(() => {
+            applyCustomTranslations();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    })();
+</script>
+<style>
+    [data-locator="created_booking_page_title"] {
+        color: #b03e25 !important;
+    }
+</style>
+//changing the "oder successfully created" tag
+//pls don't tell clients we're willing to do this, I can't go on making these miniscule style tweaks
+<style>
+    div.order-tag.success {
+        background-color: #f9ebe8 !important;
+        color: #b03e25 !important;
+    }
+
+    div.order-tag.success .tag-text[data-locator="created_booking_page_title"] {
+        color: #b03e25 !important;
+    }
+
+    div.order-tag.success [data-locator="success_icon"] svg {
+        display: none !important;
+    }
+
+    div.order-tag.success [data-locator="success_icon"]::before {
+        content: "!";
+        font-weight: bold !important;
+        font-size: 16px;
+        color: #b03e25 !important;
+        display: inline-block;
+    }
+</style>
+
+<script>
+    (() => {
+        const customTextConfig = {
+            ru: "Пожалуйста, укажите активный номер WhatsApp. Подтверждение записи и вся дальнейшая связь будут осуществляться через WhatsApp. В противном случае запись не будет подтверждена.",
+            en: "Please provide an active WhatsApp number. Your booking confirmation and all further communication will be made via WhatsApp. Otherwise, your booking will not be confirmed.",
+            az: "Zəhmət olmasa, aktiv WhatsApp nömrəsi qeyd edin. Qeydiyyatın təsdiqi və sonrakı bütün əlaqə WhatsApp vasitəsilə aparılacaq. Əks halda, qeydiyyat təsdiqlənməyəcək."
+        };
+        const fallbackLang = "ru";
+        const injectStaticText = () => {
+            const currentLang = (document.documentElement.lang || navigator.language).toLowerCase();
+            let textToInject = customTextConfig[fallbackLang];
+            const langKey = Object.keys(customTextConfig).find(key => currentLang.includes(key));
+            if (langKey) {
+                textToInject = customTextConfig[langKey];
+            }
+            const targetElement = document.querySelector('[data-locator="dostupniy-nomer-whatsapp"]');
+            if (targetElement) {
+                const existingInjection = document.getElementById('custom-whatsapp-notice');
+                if (!existingInjection) {
+                    const newTextElement = document.createElement('div');
+                    newTextElement.id = 'custom-whatsapp-notice';
+                    newTextElement.style.cssText = `
+          font-size: 12px; 
+          color: var(--y-core-color-text-secondary); 
+          margin-top: 8px; 
+          line-height: 16px;
+        `;
+                    newTextElement.textContent = textToInject;
+                    targetElement.insertAdjacentElement('afterend', newTextElement);
+                } else if (existingInjection.textContent !== textToInject) {
+                    existingInjection.textContent = textToInject;
+                }
+            }
+        };
+        injectStaticText();
+        const observer = new MutationObserver(() => {
+            injectStaticText();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    })();
+</script>
+
+<script>
+    setInterval(() => {
+        const icons = document.querySelectorAll('.any-staff-icon.sized');
+        icons.forEach(element => {
+            if (element.innerText !== "A") {
+                element.innerHTML = "A";
+                element.style.display = "flex";
+                element.style.alignItems = "center";
+                element.style.justifyContent = "center";
+                element.style.fontWeight = "bold";
+            }
+        });
+    }, 500);
+</script>
+
+<script>
+    (() => {
+        const anySpecialistTranslations = {
+            az: 'İstənilən mütəxəssis',
+            ru: 'Любой специалист'
+        };
+        const anySpecialistLabels = new Set([
+            'Any specialist',
+            'Любой специалист',
+            'İstənilən mütəxəssis'
+        ]);
+
+        setInterval(() => {
+            const currentLang = (document.documentElement.lang || navigator.language).toLowerCase();
+            const targetText = currentLang.includes('az')
+                ? anySpecialistTranslations.az
+                : anySpecialistTranslations.ru;
+            const masterTextElement = document.querySelector('[data-locator="master_name"]');
+            if (!masterTextElement) {
+                return;
+            }
+
+            const currentText = masterTextElement.textContent.trim();
+            if (anySpecialistLabels.has(currentText) && currentText !== targetText) {
+                masterTextElement.textContent = targetText;
+            }
+        }, 300);
+    })();
+</script>
+
+<style>
+    .any-staff-icon-container {
+        background-color: #fff9e8 !important;
+    }
+
+    .any-staff-icon-container .any-staff-icon {
+        color: #ffd366 !important;
+    }
+
+    .any-staff-icon-container .any-staff-icon svg,
+    .any-staff-icon-container .any-staff-icon svg path {
+        fill: #ffd366 !important;
+    }
+</style>
