@@ -144,6 +144,15 @@
     })();
 </script>
 
+<script>
+    setInterval(() => {
+        const masterTextElement = document.querySelector('[data-locator="master_name"]');
+        if (masterTextElement && masterTextElement.textContent.trim() === 'Mütəxəssisinizi seçin') {
+            masterTextElement.textContent = 'İstənilən mütəxəssis';
+        }
+    }, 300);
+</script>
+
 <style>
     .any-staff-icon-container {
         background-color: #fff9e8 !important;
